@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sketching</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="nav-container">
+    <nav class="links">
+      <h1 class="main-header">My Sketching</h1>
+      <ul class="links">
+        <li class="link-li"><a href="#"><img src="Assets/Images/facebook-icon.png" alt=""></a></li>
+        <li class="link-li"><a href="#"><img src="Assets/Images/twitter-icon.png" alt=""></a></li>
+        <li class="link-li"><a href="#"><img src="Assets/Images/github-icon.png" alt=""></a></li>
+        <li class="link-li"><a href="#"><img src="Assets/Images/linkedin_icon.png" alt=""></a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="sketch-container">
+    <div class="tools-container">
+      <input type="color" id="color-selector">
+      <div class="radio-container">
+      <div>
+        <input type="radio" name="color" id="shadow">
+        <label for="shadow">Shadow</label>
+      </div>
+      <div>
+        <input type="radio" name="color" id="colors">
+        <label for="colors">Rainbow</label>
+      </div>
+      <div>
+        <input type="radio" name="color" id="eraser">
+        <label for="eraser">Eraser</label>
+      </div>
+      </div>
+      <button class="tool" id="clear">Clear</button>
+      <div class="size-container">
+        <div class="div">Size</div>
+        <div class="size" id="size">16
+        </div>
+        <div class="change-size-btn">
+          <button id="minus-btn" class="size-changer btn-minus">-</button>
+          <button id="plus-btn" class="size-changer btn-plus">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="board-container" id="board-container">
+    </div>
+  </div>
+</body>
+<footer>
+  <h3>Liony <span class="year-span">2022</span></h3>
+  <ul class="links">
+    <li class="link-li"><a href="#"><img src="Assets/Images/facebook-icon.png" alt=""></a></li>
+    <li class="link-li"><a href="#"><img src="Assets/Images/twitter-icon.png" alt=""></a></li>
+    <li class="link-li"><a href="#"><img src="Assets/Images/github-icon.png" alt=""></a></li>
+    <li class="link-li"><a href="#"><img src="Assets/Images/linkedin_icon.png" alt=""></a></li>
+  </ul>
+</footer>
+<script src="script.js"></script>
+</html>
