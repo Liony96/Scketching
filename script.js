@@ -11,7 +11,7 @@ const INITIAL_MODE = 'color';
 //CHANGING VARIABLES
 let actualColor = INITIAL_COLOR;
 let actualMode = INITIAL_MODE;
-let actualSize = 36;
+let actualSize = 20;
 
 //DOM ELEMENTS//
 //WHITE BOARD (GRID CONTAINER)
@@ -84,7 +84,7 @@ function createGrid(actualSize) {
 
 //SIZING FUNCTIONS
 function increaseSize() {
-    if (actualSize >= 64) {
+    if (actualSize >= 32) {
         alert('THIS IS THE HIGHEST RESOLUTION')
     } else {
         actualSize+=4
