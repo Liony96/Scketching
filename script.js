@@ -1,109 +1,137 @@
-// getting the grid container
-const gridContainer = document.getElementById('board-container');
+//TO KNOW IF THE CLICK IS PRESSED
+let mouseDown = false
+document.body.onmousedown = () => (mouseDown = true)
+document.body.onmouseup = () => (mouseDown = false)
 
-// getting and changing the color value
-let color = '#000000'
+//VARIABLES
+// DEFAULT VARIABLES
+const INITIAL_COLOR = '#000000';
+const INITIAL_MODE = 'color';
+
+//CHANGING VARIABLES
+let actualColor = INITIAL_COLOR;
+let actualMode = INITIAL_MODE;
+let actualSize = 36;
+
+//DOM ELEMENTS//
+//WHITE BOARD (GRID CONTAINER)
+const whiteboard = document.getElementById('board-container');
+
+//COLOR INPUT
 const colorInput = document.getElementById('color-selector');
-colorInput.addEventListener('input', (e) => {
-    color = e.target.value;
-})
+//RADIO BUTTONS FOR MODE SELECTION
+const colorMode = document.getElementById('color');
+const shadowMode = document.getElementById('shadow');
+const rainbowMode = document.getElementById('rainbow');
+const eraserMode = document.getElementById('eraser');
 
-console.log(color)
+const modes = Array.from(document.querySelectorAll('[type = radio]'));
 
-console.log(color)
-
-//setting default size
-let sizeDiv = document.getElementById('size');
-let size = 16;
-
-// Check if mouse is Up or Down
-let mouseDown = false;
-document.body.onmousedown = () => (mouseDown = true);
-document.body.onmouseup = () => (mouseDown = false);
-
-function paintig(color) {
-    
-}
-
-//Getting the size buttons
-const increment = document.getElementById('plus-btn');
-const decrease = document.getElementById('minus-btn');
-//Setting the button to increment the grid size by 4 up to 64
-increment.addEventListener('click', () => {
-    coloring = false;
-    if (size >= 64) {
-        alert('This is the highest resolution');
-    } else {
-        size += 4;
-        clearBoard()
-        createGrid(size);
-        sizeDiv.textContent = `${size} X ${size}`
-    }
-})
-//Setting the button to decrease the grid sizeby 4
-//down to 8
-decrease.addEventListener('click', () => {
-    coloring = false;
-    if (size <= 8) {
-        alert('This is the lowest resolution');
-    } else {
-        size -= 4;
-        clearBoard()
-        createGrid(size);
-        sizeDiv.textContent = `${size} X ${size}`
-    }
-})
-
-
-//creating the child grids
-function createGrid(size) {
-    for (let i = 0; i < size ** 2; i++) {
-        gridContainer.style.gridTemplateRows = (`repeat(${size}, 1fr)`)
-        gridContainer.style.gridTemplateColumns = (`repeat(${size}, 1fr)`)
-
-        const childGrid = document.createElement('div');
-        childGrid.classList.add('grid');
-        paintig();       
-        gridContainer.appendChild(childGrid);
-    }
-}
-
-
+//BUTTONS
+//CLEAR BUTTON
 const clearBtn = document.getElementById('clear');
+//SIZING BUTTONS
+const plusBtn = document.getElementById('plus-btn');
+const minusBtn = document.getElementById('minus-btn');
+
+const sizingBtns = Array.from(document.querySelectorAll('.size-changer'))
+
+//SIZE DIV
+let sizeDiv = document.getElementById('size');
+sizeDiv.innerText = `${actualSize} X ${actualSize}`
+
+
+//LISTENER EVENTS
+colorInput.addEventListener('input', changeColor(colorInput.value));
+modes.forEach(mode => mode.addEventListener('click', changeMode));
+plusBtn.addEventListener('click', increaseSize);
+minusBtn.addEventListener('click', decreaseSize);
 clearBtn.addEventListener('click', resetBoard);
 
+//FUNCTIONS
+//SMALL FUNCTIONS TO MODIFY CHANGING VARIABLES//
+function changeColor(color) {
+    actualColor = color;
+}
+
+function changeMode() {
+    if (colorMode.checked) {
+        actualMode = 'color';
+    } else if (shadowMode.checked) {
+        actualMode = 'shadow';
+    } else if (rainbowMode.checked) {
+        actualMode = 'rainbow';
+    } else if (eraserMode.checked) {
+        actualMode = 'eraser';
+    }
+    console.log(actualMode);
+}
+
+//FUNCTION TO CREATE THE GRIDS
+function createGrid(actualSize) {
+    whiteboard.style.gridTemplateColumns = `repeat(${actualSize}, 1fr)`;
+    whiteboard.style.gridTemplateRows = `repeat(${actualSize}, 1fr)`;
+
+    for (let i = 0; i < actualSize**2; i++) {
+        const pixel = document.createElement('div');
+        pixel.addEventListener('mouseenter', paint);
+        pixel.addEventListener('mousedown', paint);
+        pixel.classList.add('grid');
+        
+        whiteboard.appendChild(pixel);
+    }
+}
+
+//SIZING FUNCTIONS
+function increaseSize() {
+    if (actualSize >= 64) {
+        alert('THIS IS THE HIGHEST RESOLUTION')
+    } else {
+        actualSize+=4
+        clearBoard();
+        createGrid(actualSize);
+    }
+    sizeDiv.innerText = `${actualSize} X ${actualSize}`
+}
+function decreaseSize() {
+    if (actualSize <= 8) {
+        alert('THIS IS THE LOWEST RESOLUTION')
+    } else {
+        actualSize-=4
+        clearBoard();
+        createGrid(actualSize);
+    }
+    sizeDiv.innerText = `${actualSize} X ${actualSize}`
+}
+
+//CLEAR AND RESET THE BOARD
 function clearBoard() {
-    gridContainer.innerHTML = '';
+    whiteboard.innerHTML = '';
 }
-
 function resetBoard() {
-    const pixels = document.querySelectorAll('.grid');
-    pixels.forEach((pixel) => {
-        pixel.style.backgroundColor = 'white';
-    })
+    clearBoard();
+    createGrid(actualSize);
 }
 
-// function changeColorMode(e) {
-//     let opacity = 0.2;
-//     //Getting the radio-buttons
-//     const blackMode = document.getElementById('black');
-//     const shadowMode = document.getElementById('shadow');
-//     const multicolorMode = document.getElementById('colors');
-//     if (e.type === 'mousenter' && !mouseDown) return;
-//     if(coloring) {
-//         if (blackMode.checked) {
-//             e.target.style.backgroundColor = 'black';
-//         } else if(shadowMode.checked){
-//             e.target.style.backgroundColor = `rgba(0, 0, 0, ${opacity})`;
-//         } else if(multicolorMode.checked) {
-//             const R = Math.floor(Math.random()*256);
-//             const G = Math.floor(Math.random()*256);
-//             const B = Math.floor(Math.random()*256);
-//             e.target.style.backgroundColor = `rgb(${R}, ${G}, ${B})`;
-//         } else if(eraser.checked) {
-//             e.target.style.backgroundColor = 'white';
-//         } else return;
-//     }
-// }
+function paint(e) {
+    if (e.type === 'mouseenter' && !mouseDown) return;
+    if (actualMode === 'color') {
+        e.target.style.backgroundColor = colorInput.value;
+    } else if (actualMode === 'shadow') {
+        let currentOpacity = Number(this.style.backgroundColor.slice(-4, -1));
+                if (currentOpacity <= 0.9) {
+                    this.style.backgroundColor = `rgba(0, 0, 0, ${currentOpacity + 0.1})`;
+                    this.classList.add('gray');
+                }
+    } else if (actualMode === 'eraser') {
+        e.target.style.backgroundColor = 'white';
+    } else if (actualMode === 'rainbow') {
+        const R = Math.floor(Math.random()*255);
+        const G = Math.floor(Math.random()*255);
+        const B = Math.floor(Math.random()*255);
+        const ALPHA = Math.floor(Math.random()*255);
+        e.target.style.backgroundColor =  `rgba(${R}, ${G}, ${B}, ${ALPHA})`;
+    }
+}
 
-createGrid(size);
+createGrid(actualSize);
