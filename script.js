@@ -114,14 +114,13 @@ function resetBoard() {
 }
 
 function paint(e) {
-    if (e.type === 'mouseenter' && !mouseDown) return;
+    if (e.type === 'mouseover' && !mouseDown) return;
     if (actualMode === 'color') {
         e.target.style.backgroundColor = colorInput.value;
     } else if (actualMode === 'shadow') {
         let currentOpacity = Number(this.style.backgroundColor.slice(-4, -1));
                 if (currentOpacity <= 0.9) {
                     this.style.backgroundColor = `rgba(0, 0, 0, ${currentOpacity + 0.1})`;
-                    this.classList.add('gray');
                 }
     } else if (actualMode === 'eraser') {
         e.target.style.backgroundColor = 'white';
