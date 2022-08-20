@@ -114,7 +114,7 @@ function resetBoard() {
 }
 
 function paint(e) {
-    if (e.type === 'mouseover' && !mouseDown) return;
+    if (e.type === 'mouseenter' && !mouseDown) return;
     if (actualMode === 'color') {
         e.target.style.backgroundColor = colorInput.value;
     } else if (actualMode === 'shadow') {
